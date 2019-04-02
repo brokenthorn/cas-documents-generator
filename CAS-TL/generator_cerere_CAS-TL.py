@@ -7,6 +7,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.x509 import ExtensionOID, NameOID
 from docx import Document
 
+import persoane
 
 class DERBasedGenerator:
     def __init__(self, template_path, certs_path, output_path):
@@ -14,9 +15,7 @@ class DERBasedGenerator:
         self.certs_path = certs_path
         self.output_folder_path = output_path
         # surname, familyname, cnp
-        self.cnp = [
-            ("Ionela-Doriana", "Martin", "1111111111118"),
-        ]
+        self.persoane = persoane.info
 
     def generate(self):
         certs = []
@@ -83,9 +82,9 @@ class DERBasedGenerator:
 
                 gasit = False
 
-                for c in self.cnp:
-                    if c[0] == subject_surname and c[1] == subject_familyname:
-                        subject_cnp = c[2]
+                for c in self.persoane:
+                    if c["prenume"] == subject_surname and c["nume"] == subject_familyname:
+                        subject_cnp = c["cnp"]
                         gasit = True
 
                 if not gasit:
